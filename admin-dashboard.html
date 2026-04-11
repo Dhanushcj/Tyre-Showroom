@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Management | Sri Dhanalakshmi Tyres Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="w-72 bg-slate-900 border-r border-slate-800 text-slate-300 flex-shrink-0 hidden lg:flex flex-col">
+            <div class="h-20 flex items-center px-6 bg-slate-950 border-b border-slate-800">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center mr-3 shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-peace text-white text-xl"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight text-white leading-tight">Sri Dhanalakshmi<br><span class="text-brand-500 text-sm">ERP System</span></span>
+            </div>
+            
+            <div class="p-6 overflow-y-auto flex-1">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4">Management</p>
+                <nav class="space-y-1.5">
+                    <a href="#overview" id="nav-overview" class="flex items-center px-4 py-3 bg-brand-600/10 text-brand-500 rounded-xl font-bold border border-brand-500/20 transition-all">
+                        <i class="fa-solid fa-grid-2 w-6 text-lg"></i> Overview
+                    </a>
+                    <a href="#invoices" id="nav-invoices" class="flex items-center px-4 py-3 text-slate-400 hover:bg-brand-600/10 hover:text-brand-500 hover:border-brand-500/20 border border-transparent rounded-xl font-bold transition-all group">
+                        <i class="fa-solid fa-file-invoice w-6 group-hover:scale-110 transition-transform"></i> Invoices
+                    </a>
+                    <a href="#inventory" id="nav-inventory" class="flex items-center px-4 py-3 text-slate-400 hover:bg-brand-600/10 hover:text-brand-500 hover:border-brand-500/20 border border-transparent rounded-xl font-bold transition-all group">
+                        <i class="fa-solid fa-boxes-stacked w-6 group-hover:scale-110 transition-transform"></i> Inventory
+                    </a>
+                </nav>
+
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 mt-8">Accounting</p>
+                <nav class="space-y-1.5">
+                    <a href="#billing" id="nav-billing" class="flex items-center px-4 py-3 text-slate-400 border border-brand-500/50 bg-brand-500/5 text-brand-500 rounded-xl font-bold transition-all group relative">
+                        <i class="fa-solid fa-plus-circle w-6 group-hover:scale-110 transition-transform"></i> Create Bill
+                        <span class="absolute right-3 top-3.5 w-2 h-2 bg-brand-500 rounded-full animate-pulse"></span>
+                    </a>
+                    <a href="#customers" id="nav-customers" class="flex items-center px-4 py-3 text-slate-400 hover:bg-brand-600/10 hover:text-brand-500 hover:border-brand-500/20 border border-transparent rounded-xl font-bold transition-all group">
+                        <i class="fa-solid fa-users-gear w-6 group-hover:scale-110 transition-transform"></i> Customers & Dealers
+                    </a>
+                    <a href="#payments" id="nav-payments" class="flex items-center px-4 py-3 text-slate-400 hover:bg-brand-600/10 hover:text-brand-500 hover:border-brand-500/20 border border-transparent rounded-xl font-bold transition-all group">
+                        <i class="fa-solid fa-money-bill-transfer w-6 group-hover:scale-110 transition-transform"></i> Payments
+                    </a>
+                </nav>
+
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 mt-8">Insights</p>
+                <nav class="space-y-1.5">
+                    <a href="#reports" id="nav-reports" class="flex items-center px-4 py-3 text-slate-400 hover:bg-brand-600/10 hover:text-brand-500 hover:border-brand-500/20 border border-transparent rounded-xl font-bold transition-all group">
+                        <i class="fa-solid fa-chart-pie w-6 group-hover:scale-110 transition-transform"></i> Reports
+                    </a>
+                    <a href="#settings" id="nav-settings" class="flex items-center px-4 py-3 text-slate-400 hover:bg-brand-600/10 hover:text-brand-500 hover:border-brand-500/20 border border-transparent rounded-xl font-bold transition-all group">
+                        <i class="fa-solid fa-sliders w-6 group-hover:scale-110 transition-transform"></i> Settings
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="p-6 bg-slate-950 border-t border-slate-800">
+                <div class="flex items-center mb-4">
+                    <img src="https://i.pravatar.cc/100?img=11" alt="Admin" class="w-10 h-10 rounded-full border-2 border-slate-700">
+                    <div class="ml-3">
+                        <p class="text-sm font-bold text-white">Store Manager</p>
+                        <p class="text-[10px] font-bold text-brand-500 uppercase tracking-wider italic">Administrator</p>
+                    </div>
+                </div>
+                <a href="index.html" class="flex items-center justify-center w-full py-2.5 bg-slate-900 hover:bg-red-500/10 hover:text-red-500 text-slate-500 rounded-xl transition-all font-bold text-xs">
+                    <i class="fa-solid fa-power-off mr-2"></i> Log Out System
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden relative">
+            
+            <!-- Mobile Header -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:hidden">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-peace text-brand-500 text-xl mr-2"></i>
+                    <span class="font-bold text-lg text-slate-900 leading-tight">Sri Dhanalakshmi<br><span class="text-brand-500">Admin</span></span>
+                </div>
+                <button class="text-slate-500 hover:text-slate-900 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </header>
+
+            <!-- Topbar (Desktop) -->
+            <header class="h-16 bg-white border-b border-slate-200 hidden lg:flex items-center justify-between px-8">
+                <h1 class="text-xl font-bold text-slate-800">eCommerce Management</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search orders or products..." class="pl-10 pr-4 py-2 border border-slate-200 rounded-full text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 w-64 bg-slate-50 transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-2.5 text-slate-400 text-sm"></i>
+                    </div>
+                    <button class="relative p-2 text-slate-400 hover:text-brand-500 transition-colors">
+                        <i class="fa-regular fa-bell text-xl"></i>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div id="main-content" class="flex-1 overflow-y-auto p-4 md:p-8">
+                
+                <div id="overview-view">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Business Overview</h1>
+                        <p class="text-slate-500 mt-1">Real-time performance metrics and critical action items.</p>
+                    </div>
+
+                    <!-- SaaS Status Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group hover:border-brand-500/50 transition-all">
+                            <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-brand-500/5 rounded-full blur-2xl group-hover:bg-brand-500/10 transition-all"></div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center text-brand-600">
+                                    <i class="fa-solid fa-indian-rupee-sign text-2xl"></i>
+                                </div>
+                                <span class="px-2.5 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase tracking-wider">+12.5% MTD</span>
+                            </div>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">Total Revenue</p>
+                            <h3 class="text-4xl font-black text-slate-900">₹8,42,000</h3>
+                        </div>
+
+                        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group hover:border-orange-500/50 transition-all">
+                            <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-orange-500/5 rounded-full blur-2xl group-hover:bg-orange-500/10 transition-all"></div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600">
+                                    <i class="fa-solid fa-clock-rotate-left text-2xl"></i>
+                                </div>
+                                <span id="pending-count-badge" class="px-2.5 py-1 bg-orange-100 text-orange-700 text-[10px] font-black rounded-full uppercase tracking-wider">8 INVOICES</span>
+                            </div>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">Pending Dues</p>
+                            <h3 class="text-4xl font-black text-slate-900">₹1,69,450</h3>
+                        </div>
+
+                        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group hover:border-green-500/50 transition-all">
+                            <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-green-500/5 rounded-full blur-2xl group-hover:bg-green-500/10 transition-all"></div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center text-green-600">
+                                    <i class="fa-solid fa-file-circle-check text-2xl"></i>
+                                </div>
+                                <span class="px-2.5 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase tracking-wider">THIS MONTH</span>
+                            </div>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">Paid Invoices</p>
+                            <h3 class="text-4xl font-black text-slate-900">42</h3>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2">
+                             <!-- Action Bar -->
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                                <h2 class="text-xl font-black text-slate-800 tracking-tight">Recent Activity</h2>
+                                <div class="flex space-x-3 w-full sm:w-auto">
+                                    <button onclick="window.location.hash='#billing'" class="flex-1 sm:flex-none px-6 py-3 bg-brand-600 text-white rounded-2xl shadow-lg shadow-brand-500/20 hover:bg-brand-500 transition-all font-bold text-sm flex items-center justify-center">
+                                        <i class="fa-solid fa-plus mr-2"></i> New Invoice
+                                    </button>
+                                </div>
+                            </div>
+                             <!-- Insert small table or feed here later -->
+                        </div>
+                        <div class="lg:col-span-1">
+                             <h2 class="text-xl font-black text-slate-800 tracking-tight mb-6">Quick Links</h2>
+                             <div class="space-y-4">
+                                 <a href="#inventory" class="block p-4 bg-white border border-slate-200 rounded-2xl hover:border-brand-500 transition-all group">
+                                     <div class="flex items-center">
+                                         <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition-all">
+                                             <i class="fa-solid fa-boxes-stacked"></i>
+                                         </div>
+                                         <div class="ml-4">
+                                            <p class="font-bold text-slate-900">Manage Stock</p>
+                                            <p class="text-xs text-slate-500">Check current tyre inventory</p>
+                                         </div>
+                                     </div>
+                                 </a>
+                                 <a href="#customers" class="block p-4 bg-white border border-slate-200 rounded-2xl hover:border-brand-500 transition-all group">
+                                     <div class="flex items-center">
+                                         <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition-all">
+                                             <i class="fa-solid fa-users"></i>
+                                         </div>
+                                         <div class="ml-4">
+                                            <p class="font-bold text-slate-900">Dealer Accounts</p>
+                                            <p class="text-xs text-slate-500">Manage balances and limits</p>
+                                         </div>
+                                     </div>
+                                 </a>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory View -->
+                <div id="inventory-view" class="hidden">
+                    <div class="mb-8 flex justify-between items-end">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Stock & Pricing</h1>
+                            <p class="text-slate-500 mt-1">Comprehensive list of available tyre models and current rates.</p>
+                        </div>
+                        <button id="add-stock-btn" class="px-6 py-3 bg-brand-600 text-white rounded-2xl shadow-lg shadow-brand-500/20 hover:bg-brand-500 transition-all font-bold text-sm">
+                            <i class="fa-solid fa-plus mr-2"></i> Add New Model
+                        </button>
+                    </div>
+
+                    <!-- Inventory Management Table -->
+                    <div id="inventory" class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-8">
+                        <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
+                            <h3 class="text-lg font-bold text-slate-900">Tyre Inventory & Pricing</h3>
+                            <button id="export-inventory-btn" class="text-sm font-medium text-brand-600 hover:text-brand-800 flex items-center"><i class="fa-solid fa-download mr-2"></i> Export CSV</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4">Brand / Model</th>
+                                        <th scope="col" class="px-6 py-4">Category</th>
+                                        <th scope="col" class="px-6 py-4">Price (INR)</th>
+                                        <th scope="col" class="px-6 py-4">Stock Level</th>
+                                        <th scope="col" class="px-6 py-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="font-bold text-slate-900">Michelin Pilot Sport 4S</div>
+                                            <div class="text-xs text-slate-400">SKU: MIC-PS4S-20</div>
+                                        </td>
+                                        <td class="px-6 py-4">Performance Car</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">
+                                            ₹19,600.00
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                42 in stock
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right space-x-3 font-medium">
+                                            <button class="text-indigo-600 hover:text-indigo-900">Modify Price</button>
+                                            <button class="text-brand-600 hover:text-brand-900">Restock</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="font-bold text-slate-900">Bridgestone Turanza</div>
+                                            <div class="text-xs text-slate-400">SKU: BRD-TRZ-18</div>
+                                        </td>
+                                        <td class="px-6 py-4">Touring Car</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">
+                                            ₹14,840.00
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                15 in stock
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right space-x-3 font-medium">
+                                            <button class="text-indigo-600 hover:text-indigo-900">Modify Price</button>
+                                            <button class="text-brand-600 hover:text-brand-900">Restock</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="hover:bg-slate-50/50 transition-colors bg-red-50/20">
+                                        <td class="px-6 py-4">
+                                            <div class="font-bold text-slate-900">Pirelli Scorpion Trail II</div>
+                                            <div class="text-xs text-slate-400">SKU: PIR-ST2-17</div>
+                                        </td>
+                                        <td class="px-6 py-4">Motorcycle</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">
+                                            ₹14,080.00
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                                                2 in stock
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right space-x-3 font-medium">
+                                            <button class="text-indigo-600 hover:text-indigo-900">Modify Price</button>
+                                            <button class="text-brand-600 hover:text-brand-900 font-bold">Restock Now</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="hover:bg-slate-50/50 transition-colors bg-red-50/20">
+                                        <td class="px-6 py-4">
+                                            <div class="font-bold text-slate-900">Goodyear EfficientGrip</div>
+                                            <div class="text-xs text-slate-400">SKU: GDY-EG-16</div>
+                                        </td>
+                                        <td class="px-6 py-4">Economy Car</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">
+                                            ₹11,200.00
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                                                0 in stock (Out)
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right space-x-3 font-medium">
+                                            <button class="text-indigo-600 hover:text-indigo-900">Modify Price</button>
+                                            <button class="text-brand-600 hover:text-brand-900 font-bold">Restock Now</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Recent Bookings Table -->
+                    <div id="bookings" class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-8">
+                        <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
+                            <h3 class="text-lg font-bold text-slate-900">Recent Customer Bookings</h3>
+                            <a href="#" class="text-sm font-medium text-brand-600 hover:text-brand-800">View All Orders</a>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4">Booking ID</th>
+                                        <th scope="col" class="px-6 py-4">Customer</th>
+                                        <th scope="col" class="px-6 py-4">Tyre Items Purchased</th>
+                                        <th scope="col" class="px-6 py-4">Date</th>
+                                        <th scope="col" class="px-6 py-4">Status</th>
+                                        <th scope="col" class="px-6 py-4">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-4 font-medium text-slate-900">#BK-9012</td>
+                                        <td class="px-6 py-4">James Wilson</td>
+                                        <td class="px-6 py-4"><span class="font-bold text-slate-800">4x</span> Michelin Pilot Sport 4S</td>
+                                        <td class="px-6 py-4">Today, 10:23 AM</td>
+                                        <td class="px-6 py-4"><span class="px-2.5 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold">Payment Confirmed</span></td>
+                                        <td class="px-6 py-4 font-bold text-slate-900">₹78,400.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-4 font-medium text-slate-900">#BK-9011</td>
+                                        <td class="px-6 py-4">Sarah Jenkins</td>
+                                        <td class="px-6 py-4"><span class="font-bold text-slate-800">2x</span> Bridgestone Turanza</td>
+                                        <td class="px-6 py-4">Today, 09:15 AM</td>
+                                        <td class="px-6 py-4"><span class="px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">Shipped</span></td>
+                                        <td class="px-6 py-4 font-bold text-slate-900">₹29,680.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-4 font-medium text-slate-900">#BK-9010</td>
+                                        <td class="px-6 py-4">City Cabs Inc.</td>
+                                        <td class="px-6 py-4"><span class="font-bold text-slate-800">20x</span> Goodyear EfficientGrip</td>
+                                        <td class="px-6 py-4">Yesterday</td>
+                                        <td class="px-6 py-4"><span class="px-2.5 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">Delivered</span></td>
+                                        <td class="px-6 py-4 font-bold text-slate-900">₹224,000.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                </div><!-- /inventory-view -->
+
+                <!-- Invoices (List) View -->
+                <div id="invoices-view" class="hidden">
+                    <div class="mb-8 flex justify-between items-end">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Invoice History</h1>
+                            <p class="text-slate-500 mt-1">Detailed record of all generated tax invoices and their payment status.</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors font-medium text-sm flex items-center">
+                                <i class="fa-solid fa-filter mr-2"></i> Filters
+                            </button>
+                            <button onclick="window.location.hash='#billing'" class="px-6 py-3 bg-brand-600 text-white rounded-2xl shadow-lg shadow-brand-500/20 hover:bg-brand-500 transition-all font-bold text-sm">
+                                <i class="fa-solid fa-plus mr-2"></i> Create Invoice
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-[2rem] shadow-sm overflow-hidden mb-10">
+                        <table id="invoices-table" class="w-full text-left text-sm text-slate-600">
+                             <thead class="bg-slate-50 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-b border-slate-200">
+                                 <tr>
+                                     <th class="px-8 py-5">Invoice ID</th>
+                                     <th class="px-8 py-5">Customer / Dealer</th>
+                                     <th class="px-8 py-5">Date</th>
+                                     <th class="px-8 py-5 text-right">Amount</th>
+                                     <th class="px-8 py-5 text-center">Status</th>
+                                     <th class="px-8 py-5 text-center">Actions</th>
+                                 </tr>
+                             </thead>
+                             <tbody class="divide-y divide-slate-100">
+                                 <!-- Dynamic Load -->
+                                 <tr id="empty-invoices-msg">
+                                     <td colspan="6" class="px-8 py-20 text-center">
+                                         <div class="flex flex-col items-center justify-center text-slate-300">
+                                             <i class="fa-solid fa-file-invoice-dollar text-6xl mb-4 opacity-20"></i>
+                                             <p class="font-bold italic">No invoices found in the ledger.</p>
+                                         </div>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Invoices (Create) View -->
+                <div id="billing-view" class="hidden">
+                    <div class="mb-8 flex justify-between items-center">
+                        <div>
+                            <h1 id="billing-title" class="text-3xl font-extrabold text-slate-900 tracking-tight">Create New Invoice</h1>
+                            <p id="billing-subtitle" class="text-slate-500 mt-1">Generate a professional tax invoice for a customer or dealer.</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Invoice ID</p>
+                            <p id="next-invoice-id" class="text-xl font-black text-brand-600">INV-2026-0043</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        <!-- Left Column: Items -->
+                        <div class="lg:col-span-8 space-y-8">
+                            <!-- Customer Selection & Fields -->
+                            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+                                <h3 class="font-black text-slate-800 mb-6 flex items-center text-lg">
+                                    <i class="fa-solid fa-user-gear mr-3 text-brand-500"></i> Customer Information
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Select Customer / Dealer</label>
+                                        <select id="bill-customer-select" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold">
+                                            <option value="">-- Choose Account --</option>
+                                            <option value="CUST-001">City Cabs Inc. (Dealer)</option>
+                                            <option value="CUST-002">Aditya Automobiles (Dealer)</option>
+                                            <option value="new">Add New Customer...</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Customer Name (Manual)</label>
+                                        <input type="text" id="bill-cust-name" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold" placeholder="Guest Customer">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Phone Number</label>
+                                        <input type="tel" id="bill-cust-phone" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm" placeholder="+91 00000 00000">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">GST Number (Optional)</label>
+                                        <input type="text" id="bill-gst-num" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-mono" placeholder="22AAAAA0000A1Z5">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Billing Address</label>
+                                        <textarea id="bill-address" rows="3" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm" placeholder="Full address and city..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Shipping Address</label>
+                                        <textarea id="ship-address" rows="3" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm" placeholder="Leave blank if same as billing..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item Picker -->
+                            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+                                <h3 class="font-black text-slate-800 mb-6 flex items-center text-lg">
+                                    <i class="fa-solid fa-plus-circle mr-3 text-brand-500"></i> Add Products
+                                </h3>
+                                <div class="flex flex-wrap items-end gap-3">
+                                    <!-- Product Select -->
+                                    <div class="flex-1 min-w-[220px]">
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Product / Tyre Model</label>
+                                        <select id="billing-item-select" class="w-full px-4 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold">
+                                            <option value="">Select Tyre Model...</option>
+                                            <option value="MIC-PS4S-20">Michelin Pilot Sport 4S (20")</option>
+                                            <option value="BRD-TRZ-18">Bridgestone Turanza QuickTrack (18")</option>
+                                            <option value="PRL-SCT-II">Pirelli Scorpion Trail II (17")</option>
+                                        </select>
+                                    </div>
+                                    <!-- Qty -->
+                                    <div class="w-24">
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Qty</label>
+                                        <input type="number" id="billing-item-qty" value="1" min="1" class="w-full px-3 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold text-center">
+                                    </div>
+                                    <!-- GST % -->
+                                    <div class="w-28">
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">GST %</label>
+                                        <div class="relative">
+                                            <input type="number" id="billing-item-tax" value="28" min="0" max="100" class="w-full pl-4 pr-8 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold">
+                                            <span class="absolute right-3 top-3.5 text-slate-400 text-xs font-black">%</span>
+                                        </div>
+                                    </div>
+                                    <!-- Discount % -->
+                                    <div class="w-28">
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Disc %</label>
+                                        <div class="relative">
+                                            <input type="number" id="billing-item-discount" value="0" min="0" max="100" class="w-full pl-4 pr-8 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold">
+                                            <span class="absolute right-3 top-3.5 text-slate-400 text-xs font-black">%</span>
+                                        </div>
+                                    </div>
+                                    <!-- Add Button -->
+                                    <div>
+                                        <label class="block text-[10px] font-black text-transparent uppercase tracking-widest mb-1.5">Add</label>
+                                        <button id="add-item-to-bill" class="px-8 py-3 bg-slate-900 text-white rounded-2xl shadow-lg hover:bg-brand-600 transition-all font-bold text-sm whitespace-nowrap">
+                                            <i class="fa-solid fa-plus mr-2"></i>Add Item
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bill Items Table -->
+                            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                                <table id="billing-table" class="w-full text-left text-sm text-slate-600">
+                                    <thead class="bg-slate-50/50 text-[10px] uppercase font-black text-slate-500 border-b border-slate-200 tracking-widest">
+                                        <tr>
+                                            <th class="px-8 py-5">Product Details</th>
+                                            <th class="px-8 py-5 text-center">Qty</th>
+                                            <th class="px-8 py-5 text-right">Rate</th>
+                                            <th class="px-8 py-5 text-right">Tax (%)</th>
+                                            <th class="px-8 py-5 text-right">Line Total</th>
+                                            <th class="px-8 py-5 text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        <!-- Items will be injected here -->
+                                        <tr id="empty-bill-msg">
+                                            <td colspan="6" class="px-8 py-20 text-center">
+                                                <div class="flex flex-col items-center justify-center text-slate-300">
+                                                    <i class="fa-solid fa-receipt text-6xl mb-4 opacity-20"></i>
+                                                    <p class="font-bold italic">No products added to the invoice list.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Summary & Actions -->
+                        <div class="lg:col-span-4 space-y-8">
+                            <div class="bg-slate-900 rounded-[2.5rem] shadow-2xl p-10 text-white relative overflow-hidden">
+                                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-500/10 rounded-full blur-[80px]"></div>
+                                <h3 class="text-2xl font-black mb-10 flex items-center">
+                                    <i class="fa-solid fa-receipt mr-3 text-brand-500"></i> Summary
+                                </h3>
+                                
+                                <div class="space-y-6 mb-10 border-b border-slate-800 pb-10">
+                                    <div class="flex justify-between text-slate-400">
+                                        <span class="text-sm font-bold uppercase tracking-widest">Subtotal</span>
+                                        <span id="bill-subtotal" class="font-black text-white">₹0.00</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-400">
+                                        <span class="text-sm font-bold uppercase tracking-widest">Total Tax</span>
+                                        <span id="bill-tax" class="font-black text-white">₹0.00</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-400">
+                                        <span class="text-sm font-bold uppercase tracking-widest">Total Discount</span>
+                                        <span id="bill-total-discount" class="font-black text-red-400">- ₹0.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-10">
+                                    <span class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2">Grand Total</span>
+                                    <span id="bill-total" class="text-6xl font-black text-brand-500 leading-none">₹0.00</span>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="mb-6">
+                                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Invoice Status</label>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <button class="status-selector active py-3 bg-brand-600 rounded-2xl text-xs font-black uppercase tracking-widest transition-all" data-status="Pending">Pending</button>
+                                            <button class="status-selector py-3 bg-slate-800 text-slate-400 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-700 transition-all font-bold" data-status="Paid">Paid</button>
+                                        </div>
+                                    </div>
+                                    <button id="generate-invoice-btn" class="w-full py-5 bg-brand-600 text-white rounded-3xl shadow-2xl shadow-brand-500/30 hover:bg-brand-500 transition-all font-black uppercase tracking-[0.1em] text-sm flex items-center justify-center group active:scale-[0.97]">
+                                        <i class="fa-solid fa-rocket mr-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i> Finalize Invoice
+                                    </button>
+                                    <button id="clear-bill-btn" class="w-full py-4 bg-slate-800 text-slate-500 rounded-2xl hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
+                                        Discard Draft
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Payment Reference -->
+                            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+                                <h3 class="font-black text-slate-800 mb-6 flex items-center text-sm uppercase tracking-widest">
+                                    <i class="fa-solid fa-credit-card mr-3 text-slate-400"></i> Payment Details
+                                </h3>
+                                <div class="space-y-4">
+                                     <select id="bill-payment-method" class="w-full px-5 py-3 border border-slate-200 rounded-2xl bg-slate-50 text-sm font-bold">
+                                         <option value="Cash">Cash Payment</option>
+                                         <option value="UPI">UPI / Digital</option>
+                                         <option value="Bank">Bank Transfer</option>
+                                         <option value="Card">Card Payment</option>
+                                     </select>
+                                     <input type="text" id="payment-note" class="w-full px-5 py-3 border border-slate-200 rounded-2xl bg-slate-50 text-sm" placeholder="Ref/Transaction ID (Optional)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customers & Dealers View -->
+                <div id="customers-view" class="hidden">
+                    <div class="mb-8 flex justify-between items-end">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Customers & Dealers</h1>
+                            <p class="text-slate-500 mt-1">Manage dealer accounts, credit limits, and outstanding balances.</p>
+                        </div>
+                        <button class="px-6 py-3 bg-brand-600 text-white rounded-2xl shadow-lg hover:bg-brand-500 transition-all font-bold text-sm">
+                            <i class="fa-solid fa-user-plus mr-2"></i> Add New Account
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Outstanding</p>
+                            <h3 class="text-3xl font-black text-red-500">₹4,24,000</h3>
+                        </div>
+                        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Dealers</p>
+                            <h3 class="text-3xl font-black text-slate-900">12</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-[2rem] shadow-sm overflow-hidden">
+                        <table id="customers-table" class="w-full text-left text-sm text-slate-600">
+                             <thead class="bg-slate-50 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-b border-slate-200">
+                                 <tr>
+                                     <th class="px-8 py-5">Account Name</th>
+                                     <th class="px-8 py-5">Type</th>
+                                     <th class="px-8 py-5">Outstanding</th>
+                                     <th class="px-8 py-5">Credit Limit</th>
+                                     <th class="px-8 py-5 text-right">Actions</th>
+                                 </tr>
+                             </thead>
+                             <tbody class="divide-y divide-slate-100 italic text-slate-400">
+                                 <!-- Dynamic Load -->
+                                 <tr><td colspan="5" class="px-8 py-10 text-center">Loading customer database...</td></tr>
+                             </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Payments View -->
+                <div id="payments-view" class="hidden">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Payments Log</h1>
+                        <p class="text-slate-500 mt-1">Recent inbound payments and transaction history.</p>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-[2rem] shadow-sm overflow-hidden">
+                        <table id="payments-table" class="w-full text-left text-sm text-slate-600">
+                             <thead class="bg-slate-50 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-b border-slate-200">
+                                 <tr>
+                                     <th class="px-8 py-5">Payment ID</th>
+                                     <th class="px-8 py-5">Customer</th>
+                                     <th class="px-8 py-5">Amount</th>
+                                     <th class="px-8 py-5">Method</th>
+                                     <th class="px-8 py-5">Date</th>
+                                     <th class="px-8 py-5 text-right">Reference</th>
+                                 </tr>
+                             </thead>
+                             <tbody class="divide-y divide-slate-100 italic text-slate-400">
+                                 <tr><td colspan="6" class="px-8 py-10 text-center">Loading transaction logs...</td></tr>
+                             </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Reports View -->
+                <div id="reports-view" class="hidden">
+                    <div class="mb-8 flex justify-between items-center">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Reports & Analytics</h1>
+                            <p class="text-slate-500 mt-1">Detailed performance metrics and tax compliance exports.</p>
+                        </div>
+                        <button class="px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-2xl font-bold shadow-sm hover:bg-slate-50">
+                            <i class="fa-solid fa-file-pdf mr-2 text-red-500"></i> Export Tax Report
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                            <h3 class="font-black text-slate-800 mb-6 uppercase tracking-widest text-xs">Top Selling Brands</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span>Michelin</span>
+                                        <span>42%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-brand-500 h-full" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span>Bridgestone</span>
+                                        <span>28%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-brand-500 h-full" style="width: 28%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-brand-600 p-8 rounded-[2rem] shadow-xl text-white">
+                             <h3 class="font-black mb-4 uppercase tracking-widest text-xs opacity-70">Monthly Growth</h3>
+                             <div class="text-5xl font-black mb-2">+18.4%</div>
+                             <p class="text-sm opacity-80 font-bold">Increasing sales trajectory compared to previous quarter.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Settings View -->
+                <div id="settings-view" class="hidden">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Account Settings</h1>
+                        <p class="text-slate-500 mt-1">Manage your administrative profile and communication preferences.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Profile Card -->
+                        <div class="lg:col-span-1">
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 text-center">
+                                <div class="relative inline-block mb-4 group">
+                                    <img id="settings-avatar-preview" src="https://i.pravatar.cc/100?img=11" alt="Profile" class="w-32 h-32 rounded-full border-4 border-slate-50 shadow-md object-cover transition-transform group-hover:scale-105">
+                                    <label for="avatar-upload" class="absolute bottom-0 right-0 w-10 h-10 bg-brand-600 text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-brand-500 transition-colors border-2 border-white">
+                                        <i class="fa-solid fa-camera text-sm"></i>
+                                    </label>
+                                    <input type="file" id="avatar-upload" class="hidden" accept="image/*">
+                                </div>
+                                <h3 id="settings-display-name" class="text-xl font-bold text-slate-900">Store Manager</h3>
+                                <p id="settings-display-email" class="text-sm text-slate-500">admin@sridhanalakshmityres.com</p>
+                                <div class="mt-6 pt-6 border-t border-slate-100 flex justify-around">
+                                    <div class="text-center">
+                                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800">Active</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Role</p>
+                                        <span class="text-sm font-bold text-slate-700">Administrator</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Form -->
+                        <div class="lg:col-span-2">
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                                    <h3 class="font-bold text-slate-800">Personal Information</h3>
+                                </div>
+                                <div class="p-6 space-y-6">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
+                                            <input type="text" id="input-admin-name" value="Store Manager" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all bg-slate-50">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-slate-700 mb-2">Display Title</label>
+                                            <input type="text" value="Administrator" disabled class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-100 text-slate-500 cursor-not-allowed">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                                            <div class="relative">
+                                                <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-400"></i>
+                                                <input type="email" id="input-admin-email" value="admin@sridhanalakshmityres.com" class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all bg-slate-50">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-slate-700 mb-2">Mobile Number</label>
+                                            <div class="relative">
+                                                <i class="fa-solid fa-phone absolute left-4 top-3.5 text-slate-400"></i>
+                                                <input type="tel" id="input-admin-mobile" value="+91 98765 43210" class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all bg-slate-50">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
+                                        <p class="text-xs text-slate-500"><i class="fa-solid fa-circle-info mr-1"></i> Changes will update your global profile visibility.</p>
+                                        <div class="flex space-x-3">
+                                            <button id="cancel-settings" class="px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors font-medium text-sm">Cancel</button>
+                                            <button id="save-settings" class="px-6 py-2.5 bg-brand-600 text-white rounded-xl shadow-md hover:bg-brand-500 shadow-brand-500/20 transition-all font-bold text-sm flex items-center">
+                                                <i class="fa-solid fa-check mr-2"></i> Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+<script src="db.js"></script>
+<script src="admin.js"></script>
+</html>
