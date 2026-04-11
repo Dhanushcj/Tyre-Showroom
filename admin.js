@@ -143,6 +143,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Global Add Inventory Button
+    const addStockBtn = document.getElementById('add-stock-btn');
+    if (addStockBtn) {
+        addStockBtn.addEventListener('click', () => {
+            const name = prompt("Enter Tyre Brand / Model name:");
+            if (!name) return;
+            const sku = prompt("Enter standard SKU Identifier:", `TYRE-${Math.floor(Math.random()*10000)}`);
+            if (!sku) return;
+            const category = prompt("Enter Category (e.g. Economy Car, Performance Car, Motorcycle):", "Economy Car");
+            if (!category) return;
+            const priceStr = prompt("Enter base price per tyre (INR):", "5000");
+            if (!priceStr) return;
+            const stockStr = prompt("Enter initial stock quantity:", "10");
+            if (!stockStr) return;
+
+            const items = window.tsDB.get('inventory') || [];
+            items.push({
+                sku: sku.trim(),
+                name: name.trim(),
+                category: category.trim(),
+                price: parseFloat(priceStr) || 0,
+                stock: parseInt(stockStr) || 0
+            });
+            window.tsDB.save('inventory', items);
+            renderInventory();
+        });
+    }
+
     // --- Customer Module ---
     function renderCustomers() {
         const customers = window.tsDB.get('customers') || [];
