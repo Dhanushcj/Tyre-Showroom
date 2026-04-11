@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await fetch('/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify([{ username: 'admin', password: 'admin@123', role: 'admin' }])
+                    body: JSON.stringify([{ username: 'admin@gmail.com', password: 'admin@123', role: 'admin' }])
                 });
-                users = [{ username: 'admin', password: 'admin@123', role: 'admin' }];
+                users = [{ username: 'admin@gmail.com', password: 'admin@123', role: 'admin' }];
             }
         }
     } catch (e) {

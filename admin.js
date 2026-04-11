@@ -690,7 +690,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const res = await fetch('/api/users');
                 if (res.ok) {
                     let users = await res.json();
-                    const admin = users.find(u => u.username === 'admin');
+                    const admin = users.find(u => u.username === 'admin@gmail.com');
                     if (!admin || admin.password !== curr) {
                         errEl.innerText = "Incorrect current password.";
                         errEl.classList.remove('hidden');
