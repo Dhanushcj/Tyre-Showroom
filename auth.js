@@ -5,14 +5,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch('/api/users');
         if (response.ok) {
             users = await response.json();
-            if (users.length === 0) {
-                // Seed default
+            
+            // Check if our specific admin@gmail.com exists
+            const hasNewAdmin = users.some(u => u.username === 'admin@gmail.com');
+            
+            if (!hasNewAdmin) {
+                // If it doesn't exist, we add it. 
+                // We also filter out any OLD legacy 'admin' username to prevent confusion
+                const updatedUsers = users.filter(u => u.username !== 'admin');
+                updatedUsers.push({ username: 'admin@gmail.com', password: 'admin@123', role: 'admin' });
+                
                 await fetch('/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify([{ username: 'admin@gmail.com', password: 'admin@123', role: 'admin' }])
+                    body: JSON.stringify(updatedUsers)
                 });
-                users = [{ username: 'admin@gmail.com', password: 'admin@123', role: 'admin' }];
+                users = updatedUsers;
             }
         }
     } catch (e) {
