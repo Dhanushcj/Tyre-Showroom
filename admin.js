@@ -145,8 +145,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Customer Module ---
     function renderCustomers() {
-        const customers = window.tsDB.get('customers');
+        const customers = window.tsDB.get('customers') || [];
         const tbody = document.querySelector('#customers-table tbody');
+        
+        const totalOutstanding = customers.reduce((sum, c) => sum + (c.balance || 0), 0);
+        const activeDealers = customers.filter(c => c.type === 'Dealer').length;
+        if (document.getElementById('customers-outstanding')) document.getElementById('customers-outstanding').innerText = `₹${totalOutstanding.toLocaleString('en-IN')}`;
+        if (document.getElementById('customers-active-count')) document.getElementById('customers-active-count').innerText = activeDealers.toString();
+
         if (!tbody) return;
 
         tbody.innerHTML = customers.map(c => `
@@ -424,11 +430,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderReports() {}
 
     function updateOverviewCards() {
-        const invoices = window.tsDB.get('invoices');
+        const invoices = window.tsDB.get('invoices') || [];
         const revenue = invoices.reduce((sum, inv) => sum + inv.total, 0);
         const pending = invoices.filter(i => i.status === 'Pending').reduce((sum, i) => sum + i.total, 0);
-        if (document.querySelector('#overview-view h3:nth-of-type(1)')) document.querySelector('#overview-view h3:nth-of-type(1)').innerText = `₹${revenue.toLocaleString('en-IN')}`;
-        if (document.querySelector('#overview-view h3:nth-of-type(2)')) document.querySelector('#overview-view h3:nth-of-type(2)').innerText = `₹${pending.toLocaleString('en-IN')}`;
+        const paidCount = invoices.filter(i => i.status === 'Paid').length;
+        
+        if (document.getElementById('overview-revenue')) document.getElementById('overview-revenue').innerText = `₹${revenue.toLocaleString('en-IN')}`;
+        if (document.getElementById('overview-pending')) document.getElementById('overview-pending').innerText = `₹${pending.toLocaleString('en-IN')}`;
+        if (document.getElementById('overview-paid')) document.getElementById('overview-paid').innerText = paidCount.toString();
+        
+        if (document.getElementById('pending-count-badge')) {
+            const pendingCount = invoices.filter(i => i.status === 'Pending').length;
+            document.getElementById('pending-count-badge').innerText = `${pendingCount} INVOICES`;
+        }
     }
 
     handleRouting();
