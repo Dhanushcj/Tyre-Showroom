@@ -54,8 +54,8 @@
 
         <!-- Login Card -->
         <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl">
-            <!-- Form Action directs to dashboard -->
-            <form action="admin-dashboard.html" method="GET" class="space-y-6">
+            <div id="login-error" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm font-bold text-center">Invalid Request.</div>
+            <form id="login-form" class="space-y-6">
                 
                 <!-- Email/Username -->
                 <div>
@@ -102,5 +102,6 @@
 
     </div>
 
+    <script src="auth.js"></script>
 </body>
 </html>

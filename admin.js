@@ -661,8 +661,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         pw.document.write(html);
         pw.document.close();
     }
-});
 
+    // Security Settings logic
+    const updatePwdBtn = document.getElementById('update-password-btn');
+    if (updatePwdBtn) {
+        updatePwdBtn.addEventListener('click', async () => {
+            const curr = document.getElementById('current-password').value;
+            const newP = document.getElementById('new-password').value;
+            const conf = document.getElementById('confirm-password').value;
+            const errEl = document.getElementById('password-error');
+            const sucEl = document.getElementById('password-success');
+            
+            errEl.classList.add('hidden');
+            sucEl.classList.add('hidden');
+            
+            if (!curr || !newP || !conf) {
+                errEl.innerText = "Please fill in all security fields.";
+                errEl.classList.remove('hidden');
+                return;
+            }
+            if (newP !== conf) {
+                errEl.innerText = "New passwords do not match!";
+                errEl.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/users');
+                if (res.ok) {
+                    let users = await res.json();
+                    const admin = users.find(u => u.username === 'admin');
+                    if (!admin || admin.password !== curr) {
+                        errEl.innerText = "Incorrect current password.";
+                        errEl.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    // Update password securely
+                    admin.password = newP;
+                    
+                    // The backend API strictly expects an array since the routes map to insertMany + deleteMany natively.
+                    await fetch('/api/users', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(users)
+                    });
+                    
+                    sucEl.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        sessionStorage.removeItem('auth');
+                        window.location.replace('admin-login.html');
+                    }, 2000);
+                }
+            } catch (e) {
+                errEl.innerText = "Server error while updating password.";
+                errEl.classList.remove('hidden');
+            }
+        });
+    }
+});
 
 
 

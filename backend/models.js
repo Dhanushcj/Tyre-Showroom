@@ -44,14 +44,22 @@ const paymentSchema = new mongoose.Schema({
   note: { type: String }
 }, { strict: false });
 
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  role: { type: String }
+}, { strict: false });
+
 const Inventory = mongoose.model('Inventory', inventorySchema);
 const Customer = mongoose.model('Customer', customerSchema);
 const Invoice = mongoose.model('Invoice', invoiceSchema);
 const Payment = mongoose.model('Payment', paymentSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = {
   inventory: Inventory,
   customers: Customer,
   invoices: Invoice,
-  payments: Payment
+  payments: Payment,
+  users: User
 };
