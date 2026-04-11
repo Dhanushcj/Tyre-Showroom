@@ -6,14 +6,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (response.ok) {
             users = await response.json();
             
-            // Check if our specific admin@gmail.com exists
-            const hasNewAdmin = users.some(u => u.username === 'admin@gmail.com');
+            // Check if our specific admin exists
+            const hasNewAdmin = users.some(u => u.username === 'admin');
             
             if (!hasNewAdmin) {
                 // If it doesn't exist, we add it. 
-                // We also filter out any OLD legacy 'admin' username to prevent confusion
-                const updatedUsers = users.filter(u => u.username !== 'admin');
-                updatedUsers.push({ username: 'admin@gmail.com', password: 'admin@123', role: 'admin' });
+                const updatedUsers = users.filter(u => u.username !== 'admin@gmail.com');
+                updatedUsers.push({ username: 'admin', password: 'admin@123', role: 'admin' });
                 
                 await fetch('/api/users', {
                     method: 'POST',
