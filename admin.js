@@ -90,6 +90,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const tbody = document.querySelector('#inventory tbody');
         if (!tbody) return;
 
+        if (items.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400 italic font-medium">No inventory items found.</td></tr>`;
+            return;
+        }
+
         tbody.innerHTML = items.map(item => `
             <tr class="hover:bg-slate-50/50 transition-colors ${item.stock <= 5 ? 'bg-red-50/20' : ''}">
                 <td class="px-6 py-4">
@@ -182,6 +187,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (document.getElementById('customers-active-count')) document.getElementById('customers-active-count').innerText = activeDealers.toString();
 
         if (!tbody) return;
+
+        if (customers.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="px-8 py-10 text-center text-slate-400 italic">No customers or dealers found.</td></tr>`;
+            return;
+        }
 
         tbody.innerHTML = customers.map(c => `
             <tr class="hover:bg-slate-50/50 transition-colors">
@@ -416,15 +426,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const invoices = window.tsDB.get('invoices');
         const tbody = document.querySelector('#invoices-table tbody');
         if (!tbody) return;
-        const emptyMsg = document.getElementById('empty-invoices-msg');
+        
         if (invoices.length === 0) {
-            if (emptyMsg) emptyMsg.classList.remove('hidden');
-            tbody.querySelectorAll('tr:not(#empty-invoices-msg)').forEach(r => r.remove());
+            tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-20 text-center text-slate-300 italic font-bold">No invoices found in the ledger.</td></tr>`;
             return;
         }
-        if (emptyMsg) emptyMsg.classList.add('hidden');
-        tbody.querySelectorAll('tr:not(#empty-invoices-msg)').forEach(r => r.remove());
-        tbody.innerHTML += invoices.map(inv => `
+
+        tbody.innerHTML = invoices.map(inv => `
             <tr class="hover:bg-slate-50/50">
                 <td class="px-8 py-6 font-bold">${inv.id}</td>
                 <td class="px-8 py-6"><div class="font-bold">${inv.customerName || inv.customer}</div></td>
@@ -450,11 +458,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderPayments() {
         const payments = window.tsDB.get('payments');
         const tbody = document.querySelector('#payments-table tbody');
-        if (!tbody || payments.length === 0) return;
+        if (!tbody) return;
+
+        if (payments.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-10 text-center text-slate-400 italic font-medium">No transaction history recorded yet.</td></tr>`;
+            return;
+        }
+
         tbody.innerHTML = payments.map(p => `
             <tr class="hover:bg-slate-50/50">
                 <td class="px-8 py-6 font-bold">${p.id}</td>
-                <td class="px-8 py-6 font-bold">${p.customerName}</td>
+                <td class="px-8 py-6 font-bold">${p.customerName || p.customerId}</td>
                 <td class="px-8 py-6 font-black text-green-600">₹${p.amount.toLocaleString('en-IN')}</td>
                 <td class="px-8 py-6"><span>${p.method}</span></td>
                 <td class="px-8 py-6 text-slate-500">${p.date}</td>

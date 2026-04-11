@@ -20,6 +20,42 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
       console.log('Connected to MongoDB');
       
+      // Seed/Sync the definitive admin user as requested 
+      try {
+          const { users } = models;
+          const adminId = 'admin';
+          const adminPass = 'admin@123';
+          
+          let admin = await users.findOne({ role: 'admin' });
+          if (admin) {
+              admin.username = adminId;
+              admin.password = adminPass;
+              await admin.save();
+              console.log('ADMIN SYNC: Admin account updated to definitively match required credentials.');
+          } else {
+              await users.create({ username: adminId, password: adminPass, role: 'admin' });
+              console.log('ADMIN SYNC: Admin account created from scratch.');
+          }
+      } catch (e) {
+          console.error('ADMIN SYNC FAILED:', e);
+      }
+      
+      // Payment Log Seeding
+      try {
+          const { payments } = models;
+          const count = await payments.countDocuments();
+          if (count === 0) {
+              console.log('PAYMENT SYNC: Seeding initial demo transactions...');
+              await payments.insertMany([
+                  { id: 'PAY-1001', customerId: 'CUST-001', customerName: 'City Cabs Inc.', amount: 15000, method: 'Cash', date: '11 Apr 2026', note: 'Advance booking payment' },
+                  { id: 'PAY-1002', customerId: 'CUST-002', customerName: 'Aditya Automobiles', amount: 8500, method: 'UPI', date: '10 Apr 2026', note: 'Reference: Transaction #88GH2' },
+                  { id: 'PAY-1003', customerId: 'GUEST', customerName: 'Walk-in Customer', amount: 2200, method: 'Card', date: '09 Apr 2026', note: 'Tyre change service' }
+              ]);
+          }
+      } catch (e) {
+          console.error('PAYMENT SYNC FAILED:', e);
+      }
+      
       // Auto-migrate from JSON if DB is empty
       try {
           const invCount = await models.inventory.countDocuments();
@@ -48,16 +84,31 @@ app.get('/api/:collection', async (req, res) => {
     if (!Model) return res.status(404).json({ error: 'Collection not found' });
     
     try {
-        const data = await Model.find({}).lean();
-        // Remove MongoDB internal _id before sending to frontend since the frontend creates its own textual IDs 
+        // Implement a 1-second timeout for database queries
+        const fetchPromise = Model.find({}).lean();
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Database Query Timeout')), 1000)
+        );
+
+        const data = await Promise.race([fetchPromise, timeoutPromise]);
+
+        // Remove MongoDB internal _id before sending to frontend
         const sanitized = data.map(item => {
            const { _id, __v, ...rest } = item;
            return rest;
         });
         res.json(sanitized);
     } catch(e) {
-        console.error(e);
-        res.status(500).json([]);
+        console.warn(`DATABASE FETCH FAILED for ${collName}, falling back to data.json. Reason:`, e.message);
+        try {
+            const raw = await fs.readFile(path.join(__dirname, 'backend', 'data.json'), 'utf-8');
+            const data = JSON.parse(raw);
+            const fallback = data[collName] || [];
+            res.json(Array.isArray(fallback) ? fallback : []);
+        } catch (fileErr) {
+            console.error('CRITICAL: Local JSON fallback failed:', fileErr.message);
+            res.json([]);
+        }
     }
 });
 

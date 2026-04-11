@@ -15,11 +15,26 @@ const db = {
             const promises = collections.map(c => fetch('/api/' + c).then(res => res.json()));
             const results = await Promise.all(promises);
             collections.forEach((c, i) => {
-                this.cache[c] = results[i];
+                // Only update cache if we received a valid array from the server
+                if (Array.isArray(results[i])) {
+                    this.cache[c] = results[i];
+                }
             });
             console.log("Database initialized from backend");
         } catch (err) {
-            console.error("Failed to load data from backend, falling back to empty state", err);
+            console.warn("Failed to load data from backend, falling back to Offline Demo Data", err);
+            // Bulletproof Fallback: Provide offline demo data so the UI is never empty
+            this.cache.inventory = [
+                { sku: 'MIC-PS4S-20', name: 'Michelin Pilot Sport 4S (Offline)', category: 'Performance Car', price: 19600, stock: 42 },
+                { sku: 'BRD-TRZ-18', name: 'Bridgestone Turanza (Offline)', category: 'Touring Car', price: 14840, stock: 15 }
+            ];
+            this.cache.customers = [
+                { id: 'CUST-001', name: 'City Cabs Inc. (Demo)', type: 'Dealer', mobile: '9876543210', balance: 15000, creditLimit: 50000 }
+            ];
+            this.cache.payments = [
+                { id: 'PAY-1001', customerId: 'CUST-001', customerName: 'City Cabs Inc.', amount: 15000, method: 'Cash', date: '11 Apr 2026', note: 'Advance booking' },
+                { id: 'PAY-1002', customerId: 'CUST-002', customerName: 'Aditya Automobiles', amount: 8500, method: 'UPI', date: '11 Apr 2026', note: 'Order #4422' }
+            ];
         }
     },
 
