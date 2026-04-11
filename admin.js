@@ -224,6 +224,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const subtitleEl = document.getElementById('billing-subtitle');
         const nextIdEl = document.getElementById('next-invoice-id');
         const finalizeBtn = document.getElementById('generate-invoice-btn');
+        const itemSelect = document.getElementById('billing-item-select');
+
+        // Dynamically populate the tyre product select dropdown
+        if (itemSelect) {
+            const inventory = window.tsDB.get('inventory') || [];
+            itemSelect.innerHTML = '<option value="">Select Tyre Model...</option>' + 
+                inventory.map(item => `<option value="${item.sku}">${item.name} (Stock: ${item.stock}) - ₹${item.price.toLocaleString('en-IN')}</option>`).join('');
+        }
 
         if (invoiceToEdit) {
             editingInvoiceId = invoiceToEdit.id;

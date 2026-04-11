@@ -80,7 +80,9 @@ const db = {
         invoices.unshift(invoice);
         this.save('invoices', invoices);
 
-        this.deductStock(invoice.items || []);
+        if (invoice.status === 'Paid') {
+            this.deductStock(invoice.items || []);
+        }
 
         if (invoice.status !== 'Paid') {
             this.updateCustomerBalance(invoice.customerId, invoice.total);
@@ -94,7 +96,9 @@ const db = {
 
         const inv = invoices[index];
 
-        this.restoreStock(inv.items || []);
+        if (inv.status === 'Paid') {
+            this.restoreStock(inv.items || []);
+        }
 
         if (inv.status !== 'Paid') {
             this.updateCustomerBalance(inv.customerId, -inv.total);
@@ -112,13 +116,17 @@ const db = {
 
         const oldInv = invoices[index];
 
-        this.restoreStock(oldInv.items || []);
+        if (oldInv.status === 'Paid') {
+            this.restoreStock(oldInv.items || []);
+        }
 
         if (oldInv.status !== 'Paid') {
             this.updateCustomerBalance(oldInv.customerId, -oldInv.total);
         }
 
-        this.deductStock(updatedInv.items || []);
+        if (updatedInv.status === 'Paid') {
+            this.deductStock(updatedInv.items || []);
+        }
 
         const merged = Object.assign({}, updatedInv, {
             id: oldInv.id,
