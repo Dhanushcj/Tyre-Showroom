@@ -80,7 +80,12 @@ app.post('/api/:collection', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Export the Express API for Vercel Serverless Functions
+module.exports = app;
+
+// Start the server locally
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
