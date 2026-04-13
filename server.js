@@ -40,21 +40,6 @@ mongoose.connect(process.env.MONGODB_URI)
           console.error('ADMIN SYNC FAILED:', e);
       }
       
-      // Payment Log Seeding
-      try {
-          const { payments } = models;
-          const count = await payments.countDocuments();
-          if (count === 0) {
-              console.log('PAYMENT SYNC: Seeding initial demo transactions...');
-              await payments.insertMany([
-                  { id: 'PAY-1001', customerId: 'CUST-001', customerName: 'City Cabs Inc.', amount: 15000, method: 'Cash', date: '11 Apr 2026', note: 'Advance booking payment' },
-                  { id: 'PAY-1002', customerId: 'CUST-002', customerName: 'Aditya Automobiles', amount: 8500, method: 'UPI', date: '10 Apr 2026', note: 'Reference: Transaction #88GH2' },
-                  { id: 'PAY-1003', customerId: 'GUEST', customerName: 'Walk-in Customer', amount: 2200, method: 'Card', date: '09 Apr 2026', note: 'Tyre change service' }
-              ]);
-          }
-      } catch (e) {
-          console.error('PAYMENT SYNC FAILED:', e);
-      }
       
       // Auto-migrate from JSON if DB is empty
       try {
