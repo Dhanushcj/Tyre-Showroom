@@ -97,6 +97,20 @@ const db = {
 
         if (invoice.status === 'Paid') {
             this.deductStock(invoice.items || []);
+            
+            const payments = this.get('payments');
+            const newPayId = "PAY-" + Math.floor(1000 + Math.random() * 9000);
+            payments.unshift({
+                id: newPayId,
+                customerId: invoice.customerId,
+                customerName: invoice.customerName,
+                invoiceId: invoice.id,
+                amount: invoice.total,
+                method: invoice.paymentMethod || 'Cash',
+                date: invoice.date,
+                note: `Auto-generated from Invoice ${invoice.id}`
+            });
+            this.save('payments', payments);
         }
 
         if (invoice.status !== 'Paid') {
@@ -141,6 +155,22 @@ const db = {
 
         if (updatedInv.status === 'Paid') {
             this.deductStock(updatedInv.items || []);
+            
+            if (oldInv.status !== 'Paid') {
+                const payments = this.get('payments');
+                const newPayId = "PAY-" + Math.floor(1000 + Math.random() * 9000);
+                payments.unshift({
+                    id: newPayId,
+                    customerId: updatedInv.customerId,
+                    customerName: updatedInv.customerName,
+                    invoiceId: updatedInv.id || id,
+                    amount: updatedInv.total,
+                    method: updatedInv.paymentMethod || 'Cash',
+                    date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                    note: `Status updated to Paid for Invoice ${updatedInv.id || id}`
+                });
+                this.save('payments', payments);
+            }
         }
 
         const merged = Object.assign({}, updatedInv, {
