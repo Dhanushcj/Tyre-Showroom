@@ -805,7 +805,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             
             try {
-                const res = await fetch('/api/users');
+                const res = await fetch('http://localhost:3000/api/users');
                 if (res.ok) {
                     let users = await res.json();
                     const admin = users.find(u => u.username === 'admin');
@@ -819,7 +819,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     admin.password = newP;
                     
                     // The backend API strictly expects an array since the routes map to insertMany + deleteMany natively.
-                    await fetch('/api/users', {
+                    await fetch('http://localhost:3000/api/users', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(users)
