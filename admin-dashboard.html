@@ -829,6 +829,64 @@
         </main>
     </div>
 
+    <!-- Inventory Action Modal -->
+    <div id="inventory-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
+        <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity cursor-pointer"></div>
+        <div class="flex min-h-full items-center justify-center p-4 text-center">
+            <div class="relative transform overflow-hidden rounded-[2.5rem] bg-white p-8 text-left shadow-2xl transition-all w-full max-w-lg border border-slate-100">
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <div class="relative z-10 flex items-center justify-between mb-8">
+                    <h3 id="modal-title" class="text-2xl font-black text-slate-900 tracking-tight">Add New Model</h3>
+                    <button id="close-modal-btn" type="button" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-red-100 text-slate-400 hover:text-red-500 transition-all cursor-pointer">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <form id="inventory-form" class="relative z-10 space-y-6">
+                    <input type="hidden" id="modal-mode" value="add">
+                    <input type="hidden" id="modal-sku-orig" value="">
+
+                    <div id="modal-field-name">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tyre Brand / Model Name</label>
+                        <input type="text" id="modal-name" required class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold" placeholder="e.g. Michelin Pilot Sport 4S">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div id="modal-field-sku">
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">SKU Identifier</label>
+                            <input type="text" id="modal-sku" required class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-mono" placeholder="TYRE-0000">
+                        </div>
+                        <div id="modal-field-category">
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Category</label>
+                            <input type="text" id="modal-category" required class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold" placeholder="Economy Car">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div id="modal-field-price">
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Price (INR)</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3 text-slate-400 font-bold text-sm">₹</span>
+                                <input type="number" id="modal-price" required step="0.01" class="w-full pl-8 pr-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div id="modal-field-stock">
+                            <label id="modal-stock-label" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Initial Stock</label>
+                            <input type="number" id="modal-stock" required class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm font-bold" placeholder="10">
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" id="modal-submit-btn" class="w-full py-4 bg-brand-600 text-white rounded-[1.5rem] shadow-xl shadow-brand-500/20 hover:bg-brand-500 hover:-translate-y-0.5 transition-all font-black uppercase tracking-widest text-sm active:scale-95">
+                            Save Item Details
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="auth.js"></script>
 <script src="db.js"></script>

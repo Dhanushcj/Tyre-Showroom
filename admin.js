@@ -85,6 +85,146 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // --- Inventory Module ---
+    // --- Inventory Modal Control ---
+    const invModal = document.getElementById('inventory-modal');
+    const invForm = document.getElementById('inventory-form');
+    
+    function openInventoryModal(mode, sku = null) {
+        const titleEl = document.getElementById('modal-title');
+        const modeEl = document.getElementById('modal-mode');
+        const skuOrigEl = document.getElementById('modal-sku-orig');
+        const stockLabel = document.getElementById('modal-stock-label');
+        const submitBtn = document.getElementById('modal-submit-btn');
+
+        const nameInput = document.getElementById('modal-name');
+        const skuInput = document.getElementById('modal-sku');
+        const catInput = document.getElementById('modal-category');
+        const priceInput = document.getElementById('modal-price');
+        const stockInput = document.getElementById('modal-stock');
+
+        // Reset fields
+        invForm.reset();
+        modeEl.value = mode;
+        skuOrigEl.value = sku || '';
+        
+        // Show/Hide fields based on mode
+        document.getElementById('modal-field-name').classList.remove('hidden');
+        document.getElementById('modal-field-sku').classList.remove('hidden');
+        document.getElementById('modal-field-category').classList.remove('hidden');
+        document.getElementById('modal-field-price').classList.remove('hidden');
+        document.getElementById('modal-field-stock').classList.remove('hidden');
+
+        if (mode === 'add') {
+            titleEl.innerText = "Add New Tyre Model";
+            stockLabel.innerText = "Initial Stock Quantity";
+            submitBtn.innerText = "Register New Item";
+            skuInput.value = `TYRE-${Math.floor(Math.random()*10000)}`;
+        } else if (mode === 'modify') {
+            titleEl.innerText = "Modify Item Details";
+            submitBtn.innerText = "Update Pricing & Info";
+            const items = window.tsDB.get('inventory');
+            const item = items.find(i => i.sku === sku);
+            if (item) {
+                nameInput.value = item.name;
+                skuInput.value = item.sku;
+                catInput.value = item.category;
+                priceInput.value = item.price;
+                stockInput.value = item.stock;
+                stockLabel.innerText = "Current Stock Level";
+            }
+        } else if (mode === 'restock') {
+            titleEl.innerText = "Inventory Restock";
+            submitBtn.innerText = "Add Stock to Ledger";
+            const items = window.tsDB.get('inventory');
+            const item = items.find(i => i.sku === sku);
+            if (item) {
+                nameInput.value = item.name;
+                skuInput.value = item.sku;
+                catInput.value = item.category;
+                priceInput.value = 0; // Fresh quantity to add
+                stockInput.value = 10; // Default fresh quantity
+                
+                // Keep only name and stock addition
+                document.getElementById('modal-field-sku').classList.add('hidden');
+                document.getElementById('modal-field-category').classList.add('hidden');
+                document.getElementById('modal-field-price').classList.add('hidden');
+                stockLabel.innerText = "Quantity to Add";
+                stockInput.placeholder = "e.g. 10";
+            }
+        }
+
+        invModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+    }
+
+    function closeInventoryModal() {
+        invModal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    if (invForm) {
+        invForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const mode = document.getElementById('modal-mode').value;
+            const skuOrig = document.getElementById('modal-sku-orig').value;
+            
+            const name = document.getElementById('modal-name').value;
+            const sku = document.getElementById('modal-sku').value;
+            const category = document.getElementById('modal-category').value;
+            const price = parseFloat(document.getElementById('modal-price').value) || 0;
+            const stockValue = parseInt(document.getElementById('modal-stock').value) || 0;
+
+            const items = window.tsDB.get('inventory') || [];
+
+            if (mode === 'add') {
+                items.push({ sku, name, category, price, stock: stockValue });
+            } else if (mode === 'modify') {
+                const item = items.find(i => i.sku === skuOrig);
+                if (item) {
+                    item.name = name;
+                    item.sku = sku;
+                    item.category = category;
+                    item.price = price;
+                    item.stock = stockValue;
+                }
+            } else if (mode === 'restock') {
+                const item = items.find(i => i.sku === skuOrig);
+                if (item) {
+                    item.stock += stockValue;
+                }
+            }
+
+            window.tsDB.save('inventory', items);
+            renderInventory();
+            closeInventoryModal();
+        });
+    }
+
+    // Close modal: X button
+    const closeBtn = document.getElementById('close-modal-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeInventoryModal();
+        });
+    }
+
+    // Close modal: Backdrop click
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', function() {
+            closeInventoryModal();
+        });
+    }
+
+    // Close modal: Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && invModal && !invModal.classList.contains('hidden')) {
+            closeInventoryModal();
+        }
+    });
+
     function renderInventory() {
         const items = window.tsDB.get('inventory');
         const tbody = document.querySelector('#inventory tbody');
@@ -121,29 +261,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         tbody.querySelectorAll('.modify-price').forEach(btn => {
             btn.addEventListener('click', () => {
-                const sku = btn.dataset.sku;
-                const items = window.tsDB.get('inventory');
-                const item = items.find(i => i.sku === sku);
-                const newPriceInput = prompt(`Update price for ${item.name}`, item.price);
-                if (newPriceInput && !isNaN(newPriceInput)) {
-                    item.price = parseFloat(newPriceInput);
-                    window.tsDB.save('inventory', items);
-                    renderInventory();
-                }
+                openInventoryModal('modify', btn.dataset.sku);
             });
         });
 
         tbody.querySelectorAll('.restock').forEach(btn => {
             btn.addEventListener('click', () => {
-                const sku = btn.dataset.sku;
-                const items = window.tsDB.get('inventory');
-                const item = items.find(i => i.sku === sku);
-                const addStock = prompt(`Restock ${item.name}`, "10");
-                if (addStock && !isNaN(addStock)) {
-                    item.stock += parseInt(addStock);
-                    window.tsDB.save('inventory', items);
-                    renderInventory();
-                }
+                openInventoryModal('restock', btn.dataset.sku);
             });
         });
     }
@@ -152,27 +276,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addStockBtn = document.getElementById('add-stock-btn');
     if (addStockBtn) {
         addStockBtn.addEventListener('click', () => {
-            const name = prompt("Enter Tyre Brand / Model name:");
-            if (!name) return;
-            const sku = prompt("Enter standard SKU Identifier:", `TYRE-${Math.floor(Math.random()*10000)}`);
-            if (!sku) return;
-            const category = prompt("Enter Category (e.g. Economy Car, Performance Car, Motorcycle):", "Economy Car");
-            if (!category) return;
-            const priceStr = prompt("Enter base price per tyre (INR):", "5000");
-            if (!priceStr) return;
-            const stockStr = prompt("Enter initial stock quantity:", "10");
-            if (!stockStr) return;
-
-            const items = window.tsDB.get('inventory') || [];
-            items.push({
-                sku: sku.trim(),
-                name: name.trim(),
-                category: category.trim(),
-                price: parseFloat(priceStr) || 0,
-                stock: parseInt(stockStr) || 0
-            });
-            window.tsDB.save('inventory', items);
-            renderInventory();
+            openInventoryModal('add');
         });
     }
 
