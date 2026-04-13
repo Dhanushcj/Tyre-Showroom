@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Management | Sri Dhanalakshmi Tyres Admin</title>
+    <title>Store Management | Sri Dhanalakshmi Enterprises Admin</title>
+    <link rel="icon" type="image/webp" href="logo.webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -32,10 +33,10 @@
         <!-- Sidebar -->
         <aside class="w-72 bg-slate-900 border-r border-slate-800 text-slate-300 flex-shrink-0 hidden lg:flex flex-col">
             <div class="h-20 flex items-center px-6 bg-slate-950 border-b border-slate-800">
-                <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center mr-3 shadow-lg shadow-brand-500/20">
-                    <i class="fa-solid fa-peace text-white text-xl"></i>
+                <div class="w-10 h-10 rounded-xl overflow-hidden mr-3 shadow-lg shadow-brand-500/20 bg-white">
+                    <img src="logo.webp" alt="Logo" class="w-full h-full object-cover">
                 </div>
-                <span class="font-bold text-xl tracking-tight text-white leading-tight">Sri Dhanalakshmi<br><span class="text-brand-500 text-sm">ERP System</span></span>
+                <span class="font-bold text-xl tracking-tight text-white leading-tight">SRI DHANALAKSHMI<br><span class="text-brand-500 text-sm">ENTERPRISES</span></span>
             </div>
             
             <div class="p-6 overflow-y-auto flex-1">
@@ -97,8 +98,8 @@
             <!-- Mobile Header -->
             <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:hidden">
                 <div class="flex items-center">
-                    <i class="fa-solid fa-peace text-brand-500 text-xl mr-2"></i>
-                    <span class="font-bold text-lg text-slate-900 leading-tight">Sri Dhanalakshmi<br><span class="text-brand-500">Admin</span></span>
+                    <img src="logo.webp" alt="Logo" class="h-8 w-8 mr-3 rounded-full object-cover border border-slate-200">
+                    <span class="font-bold text-lg text-slate-900 leading-tight">SRI DHANALAKSHMI<br><span class="text-brand-500 text-sm">ENTERPRISES</span></span>
                 </div>
                 <button class="text-slate-500 hover:text-slate-900 focus:outline-none">
                     <i class="fa-solid fa-bars text-xl"></i>
@@ -445,7 +446,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Billing Address</label>
-                                        <textarea id="bill-address" rows="3" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm" placeholder="Full address and city..."></textarea>
+                                        <textarea id="bill-address" rows="3" class="w-full px-5 py-3 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all bg-slate-50 text-sm" placeholder="Full address and city...">203-A1, CHENNAI SALLAI, KNN PETROL BUNK OPP., KRISHNAGIRI</textarea>
                                     </div>
                                     <div>
                                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Shipping Address</label>

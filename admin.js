@@ -255,6 +255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td class="px-6 py-4 text-right space-x-3 text-[10px] font-black uppercase tracking-widest">
                     <button class="text-brand-600 hover:text-brand-800 modify-price" data-sku="${item.sku}">Modify</button>
                     <button class="text-slate-400 hover:text-slate-900 restock" data-sku="${item.sku}">Restock</button>
+                    <button class="text-red-500 hover:text-red-700 delete-inventory" data-sku="${item.sku}">Delete</button>
                 </td>
             </tr>
         `).join('');
@@ -268,6 +269,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         tbody.querySelectorAll('.restock').forEach(btn => {
             btn.addEventListener('click', () => {
                 openInventoryModal('restock', btn.dataset.sku);
+            });
+        });
+
+        tbody.querySelectorAll('.delete-inventory').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to delete this specific tyre model from the inventory?')) {
+                    const sku = btn.dataset.sku;
+                    let items = window.tsDB.get('inventory') || [];
+                    items = items.filter(i => i.sku !== sku);
+                    window.tsDB.save('inventory', items);
+                    renderInventory();
+                }
             });
         });
     }
@@ -382,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('bill-cust-name').value = "";
             document.getElementById('bill-cust-phone').value = "";
             document.getElementById('bill-gst-num').value = "";
-            document.getElementById('bill-address').value = "";
+            document.getElementById('bill-address').value = "203-A1, CHENNAI SALLAI, KNN PETROL BUNK OPP., KRISHNAGIRI";
         }
         updateCartUI();
     }
@@ -636,7 +649,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Invoice ${invoice.id} - Sri Dhanalakshmi Tyres</title>
+<title>Invoice ${invoice.id} - Sri Dhanalakshmi Enterprises</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #1e293b; background:#fff; }
@@ -698,7 +711,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <!-- Header -->
 <div class="hdr">
   <div>
-    <div class="co-name">Sri Dhanalakshmi Tyres</div>
+    <div class="co-name">Sri Dhanalakshmi Enterprises</div>
     <div class="co-sub">Premium Tyre Dealership &amp; Service Center</div>
     <div class="co-sub">GST: 33AAAAA0000A1Z5 &nbsp;|&nbsp; Ph: +91 98765 43210 &nbsp;|&nbsp; Chennai, Tamil Nadu</div>
   </div>
@@ -758,7 +771,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 <!-- Footer -->
 <div class="footer">
-  Sri Dhanalakshmi Tyres &mdash; Thank you for your business!<br>
+  Sri Dhanalakshmi Enterprises &mdash; Thank you for your business!<br>
   This is a computer-generated invoice and does not require a physical signature.
 </div>
 

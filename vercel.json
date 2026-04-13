@@ -6,7 +6,31 @@
       "use": "@vercel/node"
     },
     {
-      "src": "**/*.html",
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "admin-login.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "admin-dashboard.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "admin.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "db.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "auth.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "backend/data.json",
       "use": "@vercel/static"
     }
   ],
@@ -16,8 +40,32 @@
       "dest": "/server.js"
     },
     {
+      "src": "/admin-login.html",
+      "dest": "/admin-login.html"
+    },
+    {
+      "src": "/admin-dashboard.html",
+      "dest": "/admin-dashboard.html"
+    },
+    {
+      "src": "/admin.js",
+      "dest": "/admin.js"
+    },
+    {
+      "src": "/db.js",
+      "dest": "/db.js"
+    },
+    {
+      "src": "/auth.js",
+      "dest": "/auth.js"
+    },
+    {
+      "src": "/backend/data.json",
+      "dest": "/backend/data.json"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ]
 }

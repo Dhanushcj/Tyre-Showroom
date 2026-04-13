@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const fs = require('fs/promises');
+const os = require('os');
 const models = require('./backend/models');
 
 const app = express();
@@ -72,7 +73,7 @@ app.get('/api/:collection', async (req, res) => {
         // Implement a 1-second timeout for database queries
         const fetchPromise = Model.find({}).lean();
         const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Database Query Timeout')), 1000)
+            setTimeout(() => reject(new Error('Database Query Timeout')), 8000)
         );
 
         const data = await Promise.race([fetchPromise, timeoutPromise]);
@@ -121,7 +122,29 @@ module.exports = app;
 
 // Start the server locally
 if (require.main === module) {
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+        // Find the local network IP address
+        const nets = os.networkInterfaces();
+        let lanIP = 'localhost';
+        for (const name of Object.keys(nets)) {
+            for (const net of nets[name]) {
+                if (net.family === 'IPv4' && !net.internal) {
+                    lanIP = net.address;
+                    break;
+                }
+            }
+        }
+        console.log('');
+        console.log('='.repeat(60));
+        console.log('  Tyre Showroom Server is RUNNING!');
+        console.log('='.repeat(60));
+        console.log(`  Local:    http://localhost:${PORT}`);
+        console.log(`  Network:  http://${lanIP}:${PORT}`);
+        console.log('');
+        console.log('  Open the NETWORK URL on other devices');
+        console.log('  (phones, tablets, other PCs) on the same Wi-Fi');
+        console.log('  to share the same data!');
+        console.log('='.repeat(60));
+        console.log('');
     });
 }
