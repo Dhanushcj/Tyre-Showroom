@@ -61,6 +61,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) {
             console.error("Error initializing view:", viewId, err);
         }
+
+        // Close sidebar on mobile after view switch
+        if (window.innerWidth < 1024) {
+            closeSidebar();
+        }
     }
 
     // Hash-based routing
@@ -83,6 +88,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+
+    // --- Mobile Sidebar Logic ---
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    const toggleBtn = document.getElementById('mobile-sidebar-toggle');
+
+    function openSidebar() {
+        if (!sidebar || !backdrop) return;
+        backdrop.classList.remove('hidden');
+        // Force reflow
+        void backdrop.offsetWidth;
+        backdrop.classList.add('opacity-100');
+        sidebar.classList.remove('-translate-x-full');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeSidebar() {
+        if (!sidebar || !backdrop) return;
+        backdrop.classList.remove('opacity-100');
+        sidebar.classList.add('-translate-x-full');
+        document.body.classList.remove('overflow-hidden');
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+        }, 300);
+    }
+
+    toggleBtn?.addEventListener('click', () => {
+        if (sidebar?.classList.contains('-translate-x-full')) {
+            openSidebar();
+        } else {
+            closeSidebar();
+        }
+    });
+
+    backdrop?.addEventListener('click', closeSidebar);
 
     // --- Inventory Module ---
     // --- Inventory Modal Control ---

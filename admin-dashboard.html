@@ -30,8 +30,11 @@
 
     <div class="flex h-screen overflow-hidden">
         
+        <!-- Mobile Sidebar Backdrop -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity duration-300 opacity-0"></div>
+
         <!-- Sidebar -->
-        <aside class="w-72 bg-slate-900 border-r border-slate-800 text-slate-300 flex-shrink-0 hidden lg:flex flex-col">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-slate-900 border-r border-slate-800 text-slate-300 flex-shrink-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:flex flex-col transition-transform duration-300 ease-in-out">
             <div class="h-20 flex items-center px-6 bg-slate-950 border-b border-slate-800">
                 <div class="w-10 h-10 rounded-xl overflow-hidden mr-3 shadow-lg shadow-brand-500/20 bg-white">
                     <img src="logo.webp" alt="Logo" class="w-full h-full object-cover">
@@ -101,7 +104,7 @@
                     <img src="logo.webp" alt="Logo" class="h-8 w-8 mr-3 rounded-full object-cover border border-slate-200">
                     <span class="font-bold text-lg text-slate-900 leading-tight">SRI DHANALAKSHMI<br><span class="text-brand-500 text-sm">ENTERPRISES</span></span>
                 </div>
-                <button class="text-slate-500 hover:text-slate-900 focus:outline-none">
+                <button id="mobile-sidebar-toggle" class="text-slate-500 hover:text-slate-900 focus:outline-none p-2 rounded-lg hover:bg-slate-100 transition-colors">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </header>
@@ -230,8 +233,8 @@
                             <h3 class="text-lg font-bold text-slate-900">Tyre Inventory & Pricing</h3>
                             <button id="export-inventory-btn" class="text-sm font-medium text-brand-600 hover:text-brand-800 flex items-center"><i class="fa-solid fa-download mr-2"></i> Export CSV</button>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-slate-600">
+                        <div class="overflow-x-auto scrollbar-hide">
+                            <table class="w-full text-left text-sm text-slate-600 min-w-[700px]">
                                 <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
                                     <tr>
                                         <th scope="col" class="px-6 py-4">Brand / Model</th>
@@ -372,7 +375,8 @@
                     </div>
 
                     <div class="bg-white border border-slate-200 rounded-[2rem] shadow-sm overflow-hidden mb-10">
-                        <table id="invoices-table" class="w-full text-left text-sm text-slate-600">
+                        <div class="overflow-x-auto scrollbar-hide">
+                            <table id="invoices-table" class="w-full text-left text-sm text-slate-600 min-w-[800px]">
                              <thead class="bg-slate-50 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-b border-slate-200">
                                  <tr>
                                      <th class="px-8 py-5">Invoice ID</th>
@@ -504,7 +508,8 @@
 
                             <!-- Bill Items Table -->
                             <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                                <table id="billing-table" class="w-full text-left text-sm text-slate-600">
+                                <div class="overflow-x-auto scrollbar-hide">
+                                    <table id="billing-table" class="w-full text-left text-sm text-slate-600 min-w-[600px]">
                                     <thead class="bg-slate-50/50 text-[10px] uppercase font-black text-slate-500 border-b border-slate-200 tracking-widest">
                                         <tr>
                                             <th class="px-8 py-5">Product Details</th>
@@ -618,7 +623,8 @@
                     </div>
 
                     <div class="bg-white border border-slate-200 rounded-[2rem] shadow-sm overflow-hidden">
-                        <table id="customers-table" class="w-full text-left text-sm text-slate-600">
+                        <div class="overflow-x-auto scrollbar-hide">
+                            <table id="customers-table" class="w-full text-left text-sm text-slate-600 min-w-[700px]">
                              <thead class="bg-slate-50 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-b border-slate-200">
                                  <tr>
                                      <th class="px-8 py-5">Account Name</th>
@@ -644,7 +650,8 @@
                     </div>
 
                     <div class="bg-white border border-slate-200 rounded-[2rem] shadow-sm overflow-hidden">
-                        <table id="payments-table" class="w-full text-left text-sm text-slate-600">
+                        <div class="overflow-x-auto scrollbar-hide">
+                            <table id="payments-table" class="w-full text-left text-sm text-slate-600 min-w-[700px]">
                              <thead class="bg-slate-50 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-b border-slate-200">
                                  <tr>
                                      <th class="px-8 py-5">Payment ID</th>

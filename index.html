@@ -61,13 +61,50 @@
                 </div>
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
-                    <button class="text-slate-600 hover:text-brand-600 outline-none">
+                    <button id="mobile-menu-open" class="text-slate-600 hover:text-brand-600 outline-none transition-transform active:scale-95">
                         <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-[60] lg:hidden hidden" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div id="mobile-menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity opacity-0"></div>
+        
+        <!-- Menu Content -->
+        <div id="mobile-menu-content" class="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl p-6 transition-transform translate-x-full">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center">
+                    <img src="logo.webp" alt="Logo" class="h-8 w-8 mr-3 rounded-full object-cover">
+                    <span class="font-bold text-lg text-slate-900">Sri Dhanalakshmi</span>
+                </div>
+                <button id="mobile-menu-close" class="p-2 text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            
+            <nav class="space-y-4">
+                <a href="index.html" class="block px-4 py-3 rounded-xl text-brand-600 bg-brand-50 font-bold">Home</a>
+                <a href="#categories" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 font-bold transition-colors">Categories</a>
+                <a href="#brands" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 font-bold transition-colors">Brands</a>
+                <a href="admin-login.html" class="block mt-8 px-4 py-4 rounded-2xl bg-slate-900 text-white font-bold text-center shadow-lg active:scale-[0.98] transition-transform">
+                    <i class="fa-solid fa-user-shield mr-2"></i> Admin Portal
+                </a>
+            </nav>
+            
+            <div class="absolute bottom-8 left-6 right-6 pt-6 border-t border-slate-100">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Contact Info</p>
+                <div class="space-y-3">
+                    <div class="flex items-center text-sm text-slate-600">
+                        <i class="fa-solid fa-phone w-6 text-brand-500"></i> +91 99941 21286
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 hero-pattern overflow-hidden">
@@ -347,6 +384,41 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        const openBtn = document.getElementById('mobile-menu-open');
+        const closeBtn = document.getElementById('mobile-menu-close');
+        const drawer = document.getElementById('mobile-menu-drawer');
+        const backdrop = document.getElementById('mobile-menu-backdrop');
+        const content = document.getElementById('mobile-menu-content');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function openDrawer() {
+            drawer.classList.remove('hidden');
+            // Force reflow
+            void drawer.offsetWidth;
+            backdrop.classList.add('opacity-100');
+            content.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            backdrop.classList.remove('opacity-100');
+            content.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                drawer.classList.add('hidden');
+            }, 300);
+        }
+
+        openBtn?.addEventListener('click', openDrawer);
+        closeBtn?.addEventListener('click', closeDrawer);
+        backdrop?.addEventListener('click', closeDrawer);
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeDrawer);
+        });
+    </script>
 
 </body>
 </html>
