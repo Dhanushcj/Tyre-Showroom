@@ -12,7 +12,8 @@ const db = {
     init: async function() {
         try {
             const collections = ['inventory', 'customers', 'invoices', 'payments'];
-            const promises = collections.map(c => fetch('http://localhost:3000/api/' + c).then(res => res.json()));
+            const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+            const promises = collections.map(c => fetch(API_BASE + '/api/' + c).then(res => res.json()));
             const results = await Promise.all(promises);
             collections.forEach((c, i) => {
                 // Only update cache if we received a valid array from the server
@@ -45,7 +46,8 @@ const db = {
     save: function(key, data) {
         this.cache[key] = data;
         // Fire and forget update to the backend
-        fetch('http://localhost:3000/api/' + key, {
+        const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+        fetch(API_BASE + '/api/' + key, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

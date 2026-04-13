@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let users = [];
     try {
-        const response = await fetch('http://localhost:3000/api/users');
+        const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+        const response = await fetch(API_BASE + '/api/users');
         if (response.ok) {
             users = await response.json();
         }
